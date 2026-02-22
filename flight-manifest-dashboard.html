@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boeing — Personal Flight Manifest</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #f0eeea;
+  --white: #ffffff;
+  --border: #ccc9c2;
+  --border-light: #e4e1da;
+  --text: #1a1a1a;
+  --text-mid: #4a4a4a;
+  --text-dim: #888880;
+  --boeing-blue: #003087;
+  --boeing-blue-mid: #1a4da0;
+  --boeing-blue-light: #e8eef8;
+  --aa-red: #c8102e;
+  --green: #1a7a3c;
+  --green-bg: #eef7f1;
+  --amber: #c47a00;
+  --amber-bg: #fdf6e8;
+  --red-bg: #fdf0f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  font-size: 13px;
+  min-height: 100vh;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px 12px;
+  gap: 24px;
+}
+
+/* Boeing logo block */
+.boeing-logo-block { display: flex; align-items: center; gap: 14px; }
+
+.boeing-svg { width: 130px; height: 48px; }
+
+.header-center {
+  text-align: center;
+  flex: 1;
+}
+
+.doc-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--boeing-blue);
+}
+
+.doc-subtitle {
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.header-right {
+  text-align: right;
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.9;
+}
+
+.header-right .mn { font-weight: 700; font-size: 13px; color: var(--boeing-blue); }
+
+/* Blue bottom rule */
+.header-rule { height: 4px; background: var(--boeing-blue); }
+.header-rule-thin { height: 2px; background: var(--aa-red); }
+
+/* ─── STATUS BAR ─── */
+.status-bar {
+  background: var(--boeing-blue);
+  padding: 6px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 1px;
+}
+
+.si { display: flex; align-items: center; gap: 5px; }
+.si .val { color: #fff; font-weight: 600; }
+.sd { width: 6px; height: 6px; border-radius: 50%; background: #4dff91; box-shadow: 0 0 4px #4dff91; }
+.sd.y { background: #ffd04d; box-shadow: 0 0 4px #ffd04d; }
+.sd.r { background: #ff8080; box-shadow: 0 0 4px #ff8080; }
+.sd.p { background: #c4a8f0; box-shadow: 0 0 4px #c4a8f0; }
+.spacer { flex: 1; }
+.clk { color: #fff; font-weight: 700; font-size: 11px; letter-spacing: 2px; }
+
+/* ─── LAYOUT ─── */
+.layout {
+  display: grid;
+  grid-template-columns: 296px 1fr 286px;
+  gap: 14px;
+  padding: 14px 20px 20px;
+  max-width: 1380px;
+  margin: 0 auto;
+}
+
+/* ─── CARD ─── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--boeing-blue);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+
+.ch {
+  background: var(--boeing-blue);
+  color: #fff;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: none;
+}
+
+.ch.light {
+  background: var(--boeing-blue-light);
+  color: var(--boeing-blue);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.ct {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.cb {
+  font-size: 9px;
+  padding: 2px 8px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+}
+
+.cb.light { border-color: var(--boeing-blue); color: var(--boeing-blue); }
+
+/* ─── POMODORO ─── */
+.pomo-face {
+  text-align: center;
+  padding: 20px 16px 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.pomo-phase {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.pomo-time {
+  font-size: 54px;
+  font-weight: 300;
+  font-family: 'Source Serif 4', serif;
+  color: var(--boeing-blue);
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.pomo-time.brk { color: var(--green); }
+
+.pomo-track { margin: 10px 16px 0; height: 4px; background: var(--border-light); border-radius: 2px; overflow: hidden; }
+.pomo-fill { height: 100%; background: var(--boeing-blue); border-radius: 2px; transition: width 1s linear; }
+.pomo-fill.brk { background: var(--green); }
+
+.pomo-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.ps { padding: 10px 8px; text-align: center; border-right: 1px solid var(--border-light); }
+.ps:last-child { border-right: none; }
+.ps .n { font-size: 24px; font-weight: 700; font-family: 'Source Serif 4', serif; color: var(--boeing-blue); }
+.ps .l { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); margin-top: 1px; }
+
+.pomo-btns { display: flex; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--border-light); }
+
+.btn {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  color: var(--text-mid);
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.btn:hover { background: var(--boeing-blue-light); border-color: var(--boeing-blue); color: var(--boeing-blue); }
+.btn.pri { background: var(--boeing-blue); border-color: var(--boeing-blue); color: #fff; flex: 2; }
+.btn.pri:hover { background: var(--boeing-blue-mid); }
+
+.dur-row { display: grid; grid-template-columns: 1fr 1fr; }
+
+.dur-cell {
+  padding: 10px 14px;
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dur-cell:last-child { border-right: none; }
+.dur-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); }
+.dur-ctrls { display: flex; align-items: center; gap: 4px; }
+
+.dur-btn {
+  width: 18px; height: 18px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--bg);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-mid);
+  font-weight: 700;
+  transition: all 0.1s;
+  line-height: 1;
+}
+
+.dur-btn:hover { background: var(--boeing-blue); color: #fff; border-color: var(--boeing-blue); }
+.dur-val { font-size: 13px; font-weight: 600; color: var(--boeing-blue); min-width: 22px; text-align: center; }
+
+/* ─── TASKS ─── */
+.task-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border-light);
+  align-items: stretch;
+}
+
+.task-bar select {
+  background: #f7f6f3;
+  border: none;
+  border-right: 1px solid var(--border-light);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0 8px;
+  color: var(--text-mid);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  text-align: center;
+}
+
+.psel { width: 52px; }
+.csel { width: 70px; }
+
+.task-inp {
+  flex: 1;
+  border: none;
+  padding: 10px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text);
+  outline: none;
+}
+
+.task-inp::placeholder { color: #bbb; }
+
+.task-add {
+  background: var(--boeing-blue);
+  border: none;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0 16px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  border-left: 1px solid var(--border-light);
+}
+
+.task-add:hover { background: var(--boeing-blue-mid); }
+
+.tasks-scroll { max-height: 400px; overflow-y: auto; }
+
+.tgh {
+  padding: 5px 14px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: #f7f6f3;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trow {
+  display: flex;
+  align-items: flex-start;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border-light);
+  gap: 9px;
+  transition: background 0.1s;
+}
+
+.trow:hover { background: #fbfaf8; }
+.trow.done { opacity: 0.42; }
+
+.tck {
+  width: 15px; height: 15px;
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #fff;
+  font-weight: 700;
+  transition: all 0.15s;
+}
+
+.tck:hover { border-color: var(--boeing-blue); }
+.trow.done .tck { background: var(--boeing-blue); border-color: var(--boeing-blue); }
+
+.tbody { flex: 1; min-width: 0; }
+.ttxt { font-size: 12.5px; color: var(--text); line-height: 1.4; }
+.trow.done .ttxt { text-decoration: line-through; color: var(--text-dim); }
+
+.tmeta { display: flex; gap: 5px; margin-top: 3px; align-items: center; flex-wrap: wrap; }
+
+.tag {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 1px 5px; border-radius: 1px; text-transform: uppercase;
+}
+
+.tag.study { background: var(--amber-bg); color: var(--amber); border: 1px solid #e8c060; }
+.tag.exam  { background: #f5eefa; color: #7c3aed; border: 1px solid #c4a8f0; }
+.tag.work  { background: var(--boeing-blue-light); color: var(--boeing-blue); border: 1px solid #a8bce8; }
+.tag.life  { background: var(--green-bg); color: var(--green); border: 1px solid #90d4a8; }
+
+.pbadge { font-size: 8px; font-weight: 700; letter-spacing: 1px; color: var(--text-dim); }
+.pbadge.P1 { color: var(--aa-red); }
+.pbadge.P2 { color: var(--amber); }
+
+.tdel { background: none; border: none; color: #ccc; cursor: pointer; font-size: 11px; padding: 2px 4px; border-radius: 2px; flex-shrink: 0; }
+.tdel:hover { color: var(--aa-red); background: var(--red-bg); }
+
+.empty { padding: 30px 20px; text-align: center; color: var(--text-dim); font-size: 12px; }
+.empty .ei { font-size: 28px; margin-bottom: 8px; }
+
+/* ─── FLIGHT TRACKER ─── */
+.flt-hero {
+  background: linear-gradient(135deg, #001a5c 0%, #003087 100%);
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--border-light);
+  color: #fff;
+}
+
+.flt-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+
+.flt-carrier { display: flex; align-items: center; gap: 8px; }
+
+.aa-circle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: serif; font-size: 11px; font-weight: 900; color: #fff;
+  flex-shrink: 0;
+}
+
+.flt-carrier-name { font-size: 13px; font-weight: 700; }
+.flt-num { font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 1.5px; margin-top: 1px; }
+
+.flt-badge {
+  font-size: 9px; font-weight: 700; padding: 3px 9px;
+  border-radius: 10px; letter-spacing: 1px; text-transform: uppercase;
+}
+.flt-badge.ontime { background: rgba(77,255,145,0.15); color: #4dff91; border: 1px solid rgba(77,255,145,0.3); }
+.flt-badge.delayed { background: rgba(255,200,77,0.15); color: #ffd04d; border: 1px solid rgba(255,200,77,0.3); }
+
+.flt-route { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+
+.flt-ap { text-align: center; }
+.flt-ap.right { text-align: right; }
+.ap-code { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 700; color: #fff; line-height: 1; letter-spacing: 1px; }
+.ap-city { font-size: 9px; color: rgba(255,255,255,0.5); letter-spacing: 1px; margin-top: 2px; }
+.ap-time { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.75); margin-top: 4px; }
+
+.flt-path { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+
+.path-line { width: 100%; position: relative; height: 22px; display: flex; align-items: center; }
+.path-track { width: 100%; height: 1px; background: rgba(255,255,255,0.2); position: relative; }
+.path-plane { position: absolute; font-size: 14px; transform: translateX(-50%); top: -10px; transition: left 30s linear; }
+.path-dur { font-size: 9px; color: rgba(255,255,255,0.45); letter-spacing: 1px; }
+
+.flt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.fd {
+  padding: 9px 14px;
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+.fd:nth-child(even) { border-right: none; }
+.fd:nth-last-child(-n+2) { border-bottom: none; }
+
+.fdl { font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 2px; }
+.fdv { font-size: 12px; font-weight: 600; color: var(--text); }
+.fdv.g { color: var(--green); }
+.fdv.a { color: var(--amber); }
+
+.flt-switcher {
+  padding: 9px 14px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.flt-switcher select {
+  flex: 1; font-size: 10px; font-family: Inter, sans-serif;
+  border: 1px solid var(--border); border-radius: 2px;
+  padding: 3px 6px; background: #f7f6f3; color: var(--text);
+}
+
+/* ─── EXAMS ─── */
+.exam-item { padding: 11px 14px; border-bottom: 1px solid var(--border-light); }
+
+.exam-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.exam-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.exam-del { background: none; border: none; color: #ccc; cursor: pointer; font-size: 10px; flex-shrink: 0; }
+.exam-del:hover { color: var(--aa-red); }
+
+.exam-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+.exam-date-txt { font-size: 10px; color: var(--text-dim); }
+
+.cpill {
+  font-size: 9px; font-weight: 700; padding: 2px 8px;
+  border-radius: 10px; letter-spacing: 0.5px;
+}
+.cpill.urgent { background: var(--red-bg); color: var(--aa-red); border: 1px solid #f0b0b8; }
+.cpill.soon   { background: var(--amber-bg); color: var(--amber); border: 1px solid #e8c060; }
+.cpill.ok     { background: var(--green-bg); color: var(--green); border: 1px solid #90d4a8; }
+
+.ebar { margin-top: 7px; height: 3px; background: var(--border-light); border-radius: 2px; overflow: hidden; }
+.efill { height: 100%; border-radius: 2px; }
+.efill.urgent { background: var(--aa-red); }
+.efill.soon   { background: var(--amber); }
+.efill.ok     { background: var(--green); }
+
+.exam-form { padding: 12px 14px; border-top: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 6px; }
+
+.efield {
+  width: 100%; border: 1px solid var(--border); border-radius: 2px;
+  padding: 7px 10px; font-family: Inter, sans-serif; font-size: 11px;
+  color: var(--text); outline: none; background: var(--white);
+}
+.efield:focus { border-color: var(--boeing-blue); }
+
+/* ─── NOTES ─── */
+.notes-ta {
+  width: 100%; min-height: 130px; border: none;
+  border-top: 1px solid var(--border-light);
+  padding: 12px 14px;
+  font-family: 'Source Serif 4', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-mid);
+  resize: none; outline: none;
+  background: #fffffe;
+  line-height: 1.8;
+}
+.notes-ta::placeholder { color: #ccc; }
+
+/* ─── LOG ─── */
+.log-entry { display: flex; gap: 8px; padding: 6px 14px; border-bottom: 1px solid var(--border-light); font-size: 10px; align-items: flex-start; }
+.log-t { color: var(--boeing-blue); font-weight: 600; flex-shrink: 0; min-width: 54px; }
+.log-m { color: var(--text-mid); line-height: 1.5; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ─── FOOTER ─── */
+.footer {
+  border-top: 3px solid var(--boeing-blue);
+  background: var(--white);
+  padding: 8px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  margin-top: 16px;
+}
+.footer .brand { color: var(--boeing-blue); font-weight: 700; letter-spacing: 2px; font-size: 10px; }
+
+.left-col { display: flex; flex-direction: column; gap: 14px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <!-- Boeing Official Logo -->
+    <div class="boeing-logo-block">
+      <img src="data:image/png;base64,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" alt="Boeing" style="height:48px;width:auto;display:block;"/>
+    </div>
+
+    <div class="header-center">
+      <div class="doc-title">Personal Flight Manifest</div>
+      <div class="doc-subtitle">Productivity Operations &amp; Dispatch Release</div>
+    </div>
+
+    <div class="header-right">
+      <div class="mn">MANIFEST NO. PM-001</div>
+      <div id="hdr-date">DATE: —</div>
+      <div id="hdr-utc">ZULU: —</div>
+    </div>
+  </div>
+  <div class="header-rule"></div>
+  <div class="header-rule-thin"></div>
+</header>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="si"><div class="sd"></div>SYS <span class="val">NOMINAL</span></div>
+  <div class="si"><div class="sd y" id="pomo-dot"></div><span id="pomo-stxt">TIMER <span class="val">STANDBY</span></span></div>
+  <div class="si"><div class="sd" style="background:#7dd3fc;box-shadow:0 0 4px #7dd3fc"></div>TASKS <span class="val" id="open-cnt">0</span> OPEN</div>
+  <div class="si"><div class="sd p"></div>EXAMS <span class="val" id="exam-cnt-s">0</span> LOGGED</div>
+  <div class="spacer"></div>
+  <div class="clk" id="live-clk">00:00:00 UTC</div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- LEFT: Pomodoro + Notes + Log -->
+  <div class="left-col">
+
+    <div class="card">
+      <div class="ch"><span class="ct">⏱ Chronometer — Pomodoro</span><span class="cb" id="sess-badge">Session 1</span></div>
+
+      <div class="pomo-face">
+        <div class="pomo-phase" id="pomo-phase">Work Block</div>
+        <div class="pomo-time" id="pomo-disp">25:00</div>
+      </div>
+      <div class="pomo-track"><div class="pomo-fill" id="pomo-fill" style="width:0%"></div></div>
+
+      <div class="pomo-stats">
+        <div class="ps"><div class="n" id="cnt-s">0</div><div class="l">Sessions</div></div>
+        <div class="ps"><div class="n" id="cnt-m">0</div><div class="l">Min Flown</div></div>
+        <div class="ps"><div class="n" id="cnt-b">0</div><div class="l">Breaks</div></div>
+      </div>
+
+      <div class="pomo-btns">
+        <button class="btn pri" id="pomo-btn" onclick="togglePomo()">▶ Start</button>
+        <button class="btn" onclick="resetPomo()">Reset</button>
+      </div>
+
+      <div class="dur-row">
+        <div class="dur-cell">
+          <span class="dur-lbl">Work</span>
+          <div class="dur-ctrls">
+            <button class="dur-btn" onclick="adjDur('work',-5)">−</button>
+            <span class="dur-val" id="wmin">25</span>m
+            <button class="dur-btn" onclick="adjDur('work',5)">+</button>
+          </div>
+        </div>
+        <div class="dur-cell">
+          <span class="dur-lbl">Break</span>
+          <div class="dur-ctrls">
+            <button class="dur-btn" onclick="adjDur('break',-5)">−</button>
+            <span class="dur-val" id="bmin">5</span>m
+            <button class="dur-btn" onclick="adjDur('break',5)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><span class="ct">✏ Captain's Notes</span></div>
+      <textarea class="notes-ta" placeholder="Freeform notes, strategy, study plan…&#10;Use this space for anything on your mind."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="ch light"><span class="ct">Activity Log</span><span class="cb light">Auto</span></div>
+      <div id="act-log" style="max-height:150px;overflow-y:auto;"></div>
+    </div>
+
+  </div>
+
+  <!-- CENTER: Tasks -->
+  <div class="card" style="display:flex;flex-direction:column;">
+    <div class="ch"><span class="ct">📋 Waypoint Manifest — Tasks</span><span class="cb" id="task-badge">0 Open / 0 Total</span></div>
+
+    <div class="task-bar">
+      <select id="psel" class="psel" title="Priority">
+        <option value="P1">P1</option>
+        <option value="P2" selected>P2</option>
+        <option value="P3">P3</option>
+      </select>
+      <select id="csel" class="csel" title="Category">
+        <option value="study">Study</option>
+        <option value="exam">Exam</option>
+        <option value="work">Work</option>
+        <option value="life">Life</option>
+      </select>
+      <input class="task-inp" id="task-inp" type="text" placeholder="Enter task description…" onkeydown="if(event.key==='Enter')addTask()"/>
+      <button class="task-add" onclick="addTask()">+ Add</button>
+    </div>
+
+    <div class="tasks-scroll" id="tasks-list">
+      <div class="empty"><div class="ei">📄</div>No tasks logged yet.<div style="font-size:10px;margin-top:4px;color:#bbb">Enter waypoints above to begin.</div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Flight + Exams -->
+  <div style="display:flex;flex-direction:column;gap:14px;">
+
+    <!-- FLIGHT TRACKER -->
+    <div class="card">
+      <div class="ch"><span class="ct">✈ AA Flight Tracker</span><span class="cb" id="flt-live-badge">Live</span></div>
+
+      <div class="flt-hero">
+        <div class="flt-top">
+          <div class="flt-carrier">
+            <div class="aa-circle">AA</div>
+            <div>
+              <div class="flt-carrier-name">American Airlines</div>
+              <div class="flt-num" id="flt-num-lbl">Flight AA 100</div>
+            </div>
+          </div>
+          <div class="flt-badge ontime" id="flt-badge">On Time</div>
+        </div>
+
+        <div class="flt-route">
+          <div class="flt-ap">
+            <div class="ap-code" id="ap-from">JFK</div>
+            <div class="ap-city" id="ap-from-city">New York</div>
+            <div class="ap-time" id="ap-dep-t">11:55</div>
+          </div>
+
+          <div class="flt-path">
+            <div class="path-line">
+              <div class="path-track">
+                <div class="path-plane" id="plane" style="left:5%">✈</div>
+              </div>
+            </div>
+            <div class="path-dur" id="flt-dur">7h 05m · B777</div>
+          </div>
+
+          <div class="flt-ap right">
+            <div class="ap-code" id="ap-to">LHR</div>
+            <div class="ap-city" id="ap-to-city">London</div>
+            <div class="ap-time" id="ap-arr-t">23:00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flt-grid">
+        <div class="fd"><div class="fdl">Aircraft</div><div class="fdv" id="flt-ac">Boeing 777-200ER</div></div>
+        <div class="fd"><div class="fdl">Altitude</div><div class="fdv g" id="flt-alt">36,000 ft</div></div>
+        <div class="fd"><div class="fdl">Ground Speed</div><div class="fdv" id="flt-spd">547 kts</div></div>
+        <div class="fd"><div class="fdl">Progress</div><div class="fdv a" id="flt-prog">—</div></div>
+        <div class="fd"><div class="fdl">Departure</div><div class="fdv" id="flt-dep-f">JFK · Terminal 8</div></div>
+        <div class="fd"><div class="fdl">Arrival</div><div class="fdv" id="flt-arr-f">LHR · Terminal 3</div></div>
+      </div>
+
+      <div class="flt-switcher">
+        <span>Route:</span>
+        <select id="route-sel" onchange="switchFlight()">
+          <option value="0">AA100 — JFK → LHR (Boeing 777)</option>
+          <option value="1">AA1 — JFK → LAX (Boeing 737 MAX)</option>
+          <option value="2">AA300 — MIA → LAX (Boeing 787)</option>
+          <option value="3">AA500 — ORD → DFW (Boeing 737)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- EXAM SCHEDULER -->
+    <div class="card">
+      <div class="ch"><span class="ct">📅 Exam Schedule</span><span class="cb" id="exam-badge">0 Scheduled</span></div>
+
+      <div id="exams-list">
+        <div class="empty" style="padding:18px">
+          <div class="ei">📅</div>No exams scheduled.
+        </div>
+      </div>
+
+      <div class="exam-form">
+        <input class="efield" id="exam-name" type="text" placeholder="Exam / Subject name"/>
+        <div style="display:flex;gap:6px;">
+          <input class="efield" id="exam-date" type="date" style="flex:1"/>
+          <button class="btn pri" style="flex:none;padding:7px 14px;font-size:10px;" onclick="addExam()">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="brand">BOEING COMMERCIAL AIRPLANES</div>
+  <div>MANIFEST REV 01 — APPROVED FOR FLIGHT OPS — PROPRIETARY DOCUMENT</div>
+  <div id="footer-dt">—</div>
+</footer>
+
+<script>
+// ── CLOCK ──
+function tick() {
+  const now = new Date();
+  const utc = now.toUTCString().match(/\d{2}:\d{2}:\d{2}/)[0];
+  const dt  = now.toISOString().slice(0,10);
+  document.getElementById('live-clk').textContent = utc + ' UTC';
+  document.getElementById('hdr-utc').textContent  = 'ZULU: ' + utc + 'Z';
+  document.getElementById('hdr-date').textContent = 'DATE: ' + dt;
+  document.getElementById('footer-dt').textContent = dt;
+}
+setInterval(tick, 1000); tick();
+
+// ── POMODORO ──
+let wDur = 25, bDur = 5;
+let pCur, pTot, pRun = false, pBrk = false;
+let pSess = 0, pBrks = 0, pMins = 0;
+let pIntvl = null;
+
+pCur = pTot = wDur * 60;
+
+function fmt(s) { return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+
+function drawPomo() {
+  document.getElementById('pomo-disp').textContent = fmt(pCur);
+  document.getElementById('pomo-disp').className = 'pomo-time' + (pBrk ? ' brk' : '');
+  document.getElementById('pomo-fill').className  = 'pomo-fill' + (pBrk ? ' brk' : '');
+  document.getElementById('pomo-fill').style.width = ((1 - pCur/pTot)*100) + '%';
+  document.getElementById('pomo-phase').textContent = pBrk ? 'Break Block — Recovery' : 'Work Block';
+  document.getElementById('sess-badge').textContent = 'Session ' + (pSess + 1);
+  document.getElementById('cnt-s').textContent = pSess;
+  document.getElementById('cnt-m').textContent = pMins;
+  document.getElementById('cnt-b').textContent = pBrks;
+
+  const dot = document.getElementById('pomo-dot');
+  const txt = document.getElementById('pomo-stxt');
+  if (pRun) {
+    dot.style.cssText = pBrk ? 'background:#4dff91;box-shadow:0 0 4px #4dff91' : 'background:#ffd04d;box-shadow:0 0 4px #ffd04d';
+    txt.innerHTML = (pBrk ? 'BREAK ' : 'WORK ') + '<span class="val">ACTIVE</span>';
+  } else {
+    dot.style.cssText = 'background:#ffd04d;box-shadow:0 0 4px #ffd04d';
+    txt.innerHTML = 'TIMER <span class="val">STANDBY</span>';
+  }
+}
+
+function togglePomo() {
+  pRun = !pRun;
+  const btn = document.getElementById('pomo-btn');
+  if (pRun) {
+    btn.textContent = '⏸ Pause';
+    log('Pomodoro ' + (pBrk ? 'break' : 'work session') + ' started');
+    pIntvl = setInterval(() => {
+      pCur--;
+      if (!pBrk) pMins = Math.round(pSess * wDur + ((pTot - pCur) / 60));
+      if (pCur <= 0) {
+        if (!pBrk) { pSess++; log('Work session #' + pSess + ' complete ✓'); pBrk = true; pCur = pTot = bDur * 60; }
+        else        { pBrks++; log('Break complete — ready for next session');  pBrk = false; pCur = pTot = wDur * 60; }
+      }
+      drawPomo();
+    }, 1000);
+  } else {
+    btn.textContent = '▶ Resume';
+    clearInterval(pIntvl);
+    log('Timer paused');
+  }
+  drawPomo();
+}
+
+function resetPomo() {
+  clearInterval(pIntvl); pRun = false; pBrk = false;
+  pCur = pTot = wDur * 60;
+  document.getElementById('pomo-btn').textContent = '▶ Start';
+  log('Timer reset'); drawPomo();
+}
+
+function adjDur(t, d) {
+  if (t === 'work') {
+    wDur = Math.max(5, Math.min(60, wDur + d));
+    document.getElementById('wmin').textContent = wDur;
+    if (!pRun && !pBrk) { pCur = pTot = wDur * 60; }
+  } else {
+    bDur = Math.max(1, Math.min(30, bDur + d));
+    document.getElementById('bmin').textContent = bDur;
+    if (!pRun && pBrk) { pCur = pTot = bDur * 60; }
+  }
+  drawPomo();
+}
+
+// ── TASKS ──
+let tasks = JSON.parse(localStorage.getItem('pm2-tasks') || '[]');
+const save = () => localStorage.setItem('pm2-tasks', JSON.stringify(tasks));
+
+function renderTasks() {
+  const el = document.getElementById('tasks-list');
+  const open = tasks.filter(t => !t.done);
+  const done = tasks.filter(t => t.done);
+
+  if (!tasks.length) {
+    el.innerHTML = `<div class="empty"><div class="ei">📄</div>No tasks logged yet.<div style="font-size:10px;margin-top:4px;color:#bbb">Enter waypoints above to begin.</div></div>`;
+    updTaskStatus(); return;
+  }
+
+  let h = '';
+  [['P1','Priority One — Critical'],['P2','Priority Two — Standard'],['P3','Priority Three — Optional']].forEach(([p,lbl]) => {
+    const g = open.filter(t => t.priority === p);
+    if (!g.length) return;
+    const c = p==='P1'?'var(--aa-red)':p==='P2'?'var(--amber)':'var(--text-dim)';
+    h += `<div class="tgh"><span style="color:${c}">${p}</span> ${lbl}</div>`;
+    g.forEach(t => h += tHTML(t));
+  });
+  if (done.length) { h += `<div class="tgh" style="color:#aaa">Completed</div>`; done.forEach(t => h += tHTML(t)); }
+  el.innerHTML = h;
+  updTaskStatus();
+}
+
+function tHTML(t) {
+  return `<div class="trow ${t.done?'done':''}">
+    <div class="tck" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div>
+    <div class="tbody">
+      <div class="ttxt">${t.text}</div>
+      <div class="tmeta">
+        <span class="tag ${t.cat}">${t.cat}</span>
+        <span class="pbadge ${t.priority}">${t.priority}</span>
+        <span style="font-size:9px;color:#bbb">${t.ts}</span>
+      </div>
+    </div>
+    <button class="tdel" onclick="delTask('${t.id}')">✕</button>
+  </div>`;
+}
+
+function addTask() {
+  const inp = document.getElementById('task-inp');
+  const text = inp.value.trim(); if (!text) return;
+  const t = { id: Date.now().toString(), text,
+    priority: document.getElementById('psel').value,
+    cat: document.getElementById('csel').value,
+    done: false,
+    ts: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) };
+  tasks.unshift(t); save(); renderTasks(); inp.value = '';
+  log(`Task [${t.priority}] added: "${text.slice(0,40)}${text.length>40?'…':''}"`);
+}
+
+function toggleTask(id) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  t.done = !t.done; save(); renderTasks();
+  if (t.done) log(`Completed: "${t.text.slice(0,35)}"`);
+}
+
+function delTask(id) {
+  tasks = tasks.filter(x => x.id !== id); save(); renderTasks();
+  log('Task removed from manifest');
+}
+
+function updTaskStatus() {
+  const o = tasks.filter(t => !t.done).length, tot = tasks.length;
+  document.getElementById('task-badge').textContent = `${o} Open / ${tot} Total`;
+  document.getElementById('open-cnt').textContent = o;
+}
+
+// ── EXAMS ──
+let exams = JSON.parse(localStorage.getItem('pm2-exams') || '[]');
+const saveE = () => localStorage.setItem('pm2-exams', JSON.stringify(exams));
+
+function renderExams() {
+  const el = document.getElementById('exams-list');
+  document.getElementById('exam-badge').textContent = exams.length + ' Scheduled';
+  document.getElementById('exam-cnt-s').textContent = exams.length;
+
+  if (!exams.length) { el.innerHTML = `<div class="empty" style="padding:18px"><div class="ei">📅</div>No exams scheduled.</div>`; return; }
+
+  const sorted = [...exams].sort((a,b) => new Date(a.date)-new Date(b.date));
+  let h = '';
+  sorted.forEach(e => {
+    const days = Math.ceil((new Date(e.date) - new Date()) / 86400000);
+    const cls = days <= 3 ? 'urgent' : days <= 7 ? 'soon' : 'ok';
+    const lbl = days < 0 ? 'Passed' : days === 0 ? 'Today!' : `T−${days} days`;
+    const pct = Math.max(0, Math.min(100, (1 - days/45)*100));
+    h += `<div class="exam-item">
+      <div class="exam-top"><div class="exam-name">${e.name}</div><button class="exam-del" onclick="delExam('${e.id}')">✕</button></div>
+      <div class="exam-meta"><div class="exam-date-txt">${e.date}</div><div class="cpill ${cls}">${lbl}</div></div>
+      <div class="ebar"><div class="efill ${cls}" style="width:${pct}%"></div></div>
+    </div>`;
+  });
+  el.innerHTML = h;
+}
+
+function addExam() {
+  const name = document.getElementById('exam-name').value.trim();
+  const date = document.getElementById('exam-date').value;
+  if (!name || !date) return;
+  exams.push({ id: Date.now().toString(), name, date });
+  saveE(); renderExams();
+  document.getElementById('exam-name').value = '';
+  document.getElementById('exam-date').value = '';
+  log(`Exam scheduled: ${name} on ${date}`);
+}
+
+function delExam(id) {
+  exams = exams.filter(e => e.id !== id); saveE(); renderExams();
+}
+
+// ── FLIGHT TRACKER ──
+const FLIGHTS = [
+  { num:'AA 100', from:'JFK', fromCity:'New York', fromT:'Terminal 8', to:'LHR', toCity:'London', toT:'Terminal 3', dep:'11:55', arr:'23:00', dur:'7h 05m', ac:'Boeing 777-200ER', alt:'36,000 ft', spd:'547 kts', status:'ontime' },
+  { num:'AA 1',   from:'JFK', fromCity:'New York', fromT:'Terminal 8', to:'LAX', toCity:'Los Angeles', toT:'Terminal 4', dep:'08:00', arr:'11:19', dur:'5h 19m', ac:'Boeing 737 MAX 8', alt:'38,000 ft', spd:'520 kts', status:'ontime' },
+  { num:'AA 300', from:'MIA', fromCity:'Miami',    fromT:'Terminal D',  to:'LAX', toCity:'Los Angeles', toT:'Terminal 4', dep:'13:35', arr:'16:45', dur:'5h 10m', ac:'Boeing 787-9 Dreamliner', alt:'37,000 ft', spd:'535 kts', status:'delayed' },
+  { num:'AA 500', from:'ORD', fromCity:'Chicago',  fromT:'Terminal 3',  to:'DFW', toCity:'Dallas',      toT:'Terminal A', dep:'07:30', arr:'09:55', dur:'2h 25m', ac:'Boeing 737-800', alt:'35,000 ft', spd:'502 kts', status:'ontime' },
+];
+
+let curFlt = 0;
+
+function drawFlight(f) {
+  document.getElementById('flt-num-lbl').textContent = 'Flight ' + f.num;
+  const badge = document.getElementById('flt-badge');
+  badge.textContent = f.status === 'ontime' ? 'On Time' : 'Delayed';
+  badge.className = 'flt-badge ' + f.status;
+  document.getElementById('ap-from').textContent     = f.from;
+  document.getElementById('ap-from-city').textContent = f.fromCity;
+  document.getElementById('ap-dep-t').textContent    = f.dep;
+  document.getElementById('ap-to').textContent       = f.to;
+  document.getElementById('ap-to-city').textContent  = f.toCity;
+  document.getElementById('ap-arr-t').textContent    = f.arr;
+  document.getElementById('flt-dur').textContent     = f.dur + ' · ' + f.ac.split(' ')[0] + ' ' + f.ac.split(' ')[1];
+  document.getElementById('flt-ac').textContent      = f.ac;
+  document.getElementById('flt-alt').textContent     = f.alt;
+  document.getElementById('flt-spd').textContent     = f.spd;
+  document.getElementById('flt-dep-f').textContent   = f.from + ' · ' + f.fromT;
+  document.getElementById('flt-arr-f').textContent   = f.to + ' · ' + f.toT;
+
+  // Progress
+  const now = new Date();
+  const [dh,dm] = f.dep.split(':').map(Number);
+  const [ah,am] = f.arr.split(':').map(Number);
+  const depM = dh*60+dm;
+  const arrM = (ah < dh ? ah+24 : ah)*60+am;
+  const nowM = now.getUTCHours()*60+now.getUTCMinutes();
+  let prog = Math.max(0, Math.min(100, ((nowM-depM)/(arrM-depM))*100));
+  if (f.status === 'delayed') prog = Math.max(0, prog - 12);
+  document.getElementById('flt-prog').textContent = Math.round(prog) + '%';
+  const planeLeft = Math.max(3, Math.min(94, prog));
+  document.getElementById('plane').style.left = planeLeft + '%';
+}
+
+function switchFlight() {
+  curFlt = parseInt(document.getElementById('route-sel').value);
+  drawFlight(FLIGHTS[curFlt]);
+  log('Flight tracker switched to ' + FLIGHTS[curFlt].num);
+}
+
+setInterval(() => drawFlight(FLIGHTS[curFlt]), 60000);
+
+// ── LOG ──
+function log(msg) {
+  const el = document.getElementById('act-log');
+  const t = new Date().toTimeString().slice(0,8);
+  const div = document.createElement('div');
+  div.className = 'log-entry';
+  div.innerHTML = `<span class="log-t">${t}Z</span><span class="log-m">${msg}</span>`;
+  el.insertBefore(div, el.firstChild);
+  while (el.children.length > 30) el.removeChild(el.lastChild);
+}
+
+// ── INIT ──
+drawPomo(); renderTasks(); renderExams(); drawFlight(FLIGHTS[0]);
+log('System initialized — manifest loaded');
+log('All systems nominal — ready for departure');
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.code === 'Space') { e.preventDefault(); togglePomo(); }
+});
+</script>
+</body>
+</html>
